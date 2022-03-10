@@ -1,4 +1,4 @@
-package comp444.comp444.blog.user;
+package group2.comp440.blog.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

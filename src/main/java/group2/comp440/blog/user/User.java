@@ -1,4 +1,4 @@
-package comp444.comp444.blog.user;
+package group2.comp440.blog.user;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,8 +16,11 @@ public class User {
     @Column(name = "id", updatable = false)
     private long id;
 
-    @Column(name = "name", nullable = false, columnDefinition = "TEXT")
-    private String name;
+    @Column(name = "first_name", nullable = false, columnDefinition = "TEXT")
+    private String firstName;
+
+    @Column(name = "last_name", nullable = false, columnDefinition = "TEXT")
+    private String lastName;
 
     @Column(name = "username", nullable = false, columnDefinition = "TEXT")
     private String username;
@@ -31,8 +34,9 @@ public class User {
     public User() {
     }
 
-    public User(String csun_id, String name, String username, String email, String password) {
-        this.name = name;
+    public User(String firstName, String lastName, String username, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.username = username;
         this.email = email;
         this.password = password;
@@ -42,12 +46,20 @@ public class User {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getUsername() {

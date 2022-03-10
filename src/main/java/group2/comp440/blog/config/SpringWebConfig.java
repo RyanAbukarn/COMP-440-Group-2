@@ -1,4 +1,4 @@
-package comp444.comp444.blog.config;
+package group2.comp440.blog.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
