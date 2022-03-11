@@ -5,6 +5,8 @@ use `projdb`;
 --
 -- Table structure for table `department`
 --
+DROP TABLE IF EXISTS `instructor`;
+DROP TABLE IF EXISTS `course`;
 DROP TABLE IF EXISTS `department`;
 CREATE TABLE `department` (
   `dept_name` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
@@ -21,7 +23,7 @@ INSERT INTO `department` VALUES ('Accounting','Saucon',441840.92),('Astronomy','
 --
 -- Table structure for table `course`
 --
-DROP TABLE IF EXISTS `course`;
+
 CREATE TABLE `course` (
   `course_id` varchar(8) COLLATE utf8mb4_general_ci NOT NULL,
   `title` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -40,7 +42,6 @@ INSERT INTO `course` VALUES ('101','Diffusion and Phase Transformation','Mech. E
 --
 -- Table structure for table `instructor`
 --
-DROP TABLE IF EXISTS `instructor`;
 CREATE TABLE `instructor` (
   `ID` varchar(5) COLLATE utf8mb4_general_ci NOT NULL,
   `name` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,

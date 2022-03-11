@@ -10,6 +10,7 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class InitializeDatabaseController {
@@ -23,12 +24,13 @@ public class InitializeDatabaseController {
     }
 
     @PostMapping("/initialize-database")
-    public String postInitialize() {
+    public String postInitialize(RedirectAttributes redirectAttributes) {
         ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8",
-                new ClassPathResource(
-                        "/Users/ryan/Documents/group_/comp444/src/main/java/group2/comp440/blog/initializeDatabase/university.sql"));
+                new ClassPathResource("/university.sql"));
         resourceDatabasePopulator.execute(dataSource);
-        return "redirect: users/initialize-database";
+        redirectAttributes.addFlashAttribute("message", "Successfully added the initialize database");
+        redirectAttributes.addFlashAttribute("alertClass", "alert-success");
+        return "redirect:/initialize-database";
     }
 
 }
