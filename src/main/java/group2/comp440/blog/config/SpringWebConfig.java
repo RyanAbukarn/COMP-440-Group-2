@@ -3,6 +3,7 @@ package group2.comp440.blog.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
@@ -33,5 +34,10 @@ public class SpringWebConfig implements WebMvcConfigurer {
     @Bean
     public LayoutDialect layoutDialect() {
         return new LayoutDialect(new GroupingStrategy());
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/users/login").setViewName("login");
     }
 }

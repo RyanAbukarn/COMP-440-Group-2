@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
 @Entity(name = "User")
@@ -22,14 +23,17 @@ public class User {
     @Column(name = "last_name", nullable = false, columnDefinition = "TEXT")
     private String lastName;
 
-    @Column(name = "username", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "username", nullable = false, columnDefinition = "TEXT", unique = true)
     private String username;
 
-    @Column(name = "email", nullable = false, columnDefinition = "TEXT")
+    @Column(name = "email", nullable = false, columnDefinition = "TEXT", unique = true)
     private String email;
 
     @Column(name = "password", nullable = false, columnDefinition = "TEXT")
     private String password;
+
+    @Transient
+    private String matchingPassword;
 
     public User() {
     }
@@ -86,4 +90,15 @@ public class User {
         this.password = password;
     }
 
+    public String getMatchingPassword() {
+        return matchingPassword;
+    }
+
+    public void setMatchingPassword(String matchingPassword) {
+        this.matchingPassword = matchingPassword;
+    }
+
+    public boolean isPasswordMatching(){
+        return this.password.equals(this.matchingPassword);
+    }
 }
