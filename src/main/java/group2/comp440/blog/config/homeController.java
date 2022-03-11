@@ -11,7 +11,7 @@ import group2.comp440.blog.user.User;
 import group2.comp440.blog.user.UserRepository;
 
 @Controller
-public class homeController {
+public class HomeController {
     @Autowired
     private UserRepository userRepository;
     @GetMapping("/")
@@ -20,5 +20,4 @@ public class homeController {
         model.addAttribute("user", currentUser);
         return "user/index";
     }
-    
 }
