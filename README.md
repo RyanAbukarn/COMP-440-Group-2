@@ -2,6 +2,7 @@
 
 ## Member Contributions
 Jozsef Feher - Login and Signup pages with validation
+
 Ryan Abukarn - Project initialization with user table and Initialize Database option for user
 
 ## Sources Used
