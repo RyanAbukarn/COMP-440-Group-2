@@ -1,8 +1,5 @@
 package group2.comp440.blog.config;
 
-import javax.sql.DataSource;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -18,47 +15,44 @@ import group2.comp440.blog.user.CustomUserDetailsService;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private DataSource dataSource;
-     
+
     @Bean
     public UserDetailsService userDetailsService() {
         return new CustomUserDetailsService();
     }
-     
+
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-     
+
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
-         
+
         return authProvider;
     }
- 
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider());
     }
- 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-            .antMatchers("/users/register").permitAll()
-            .anyRequest().authenticated()
-            .and()
-            .formLogin()
+                .antMatchers("/users/register").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
                 .loginPage("/users/login")
                 .loginProcessingUrl("/users/login")
                 .defaultSuccessUrl("/")
                 .permitAll()
-            .and()
-            .logout().logoutUrl("/users/logout").logoutSuccessUrl("/users/login").permitAll();
+                .and()
+                .logout().logoutUrl("/users/logout").logoutSuccessUrl("/users/login").permitAll();
     }
-     
-     
+
 }

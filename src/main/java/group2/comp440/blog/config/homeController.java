@@ -14,8 +14,9 @@ import group2.comp440.blog.user.UserRepository;
 public class HomeController {
     @Autowired
     private UserRepository userRepository;
+
     @GetMapping("/")
-    public String index(Model model, @AuthenticationPrincipal UserDetails userDetails){
+    public String index(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         User currentUser = userRepository.findByUsername(userDetails.getUsername());
         model.addAttribute("user", currentUser);
         return "user/index";
