@@ -11,3 +11,6 @@ https://www.codejava.net/frameworks/spring-boot/user-registration-and-login-tuto
 
 Spring Security Custom Login Page with Thymeleaf, HTML 5 and Bootstrap 4
 https://www.codejava.net/frameworks/spring-boot/spring-security-custom-login-page
+
+Spring Boot JPA 
+https://www.javatpoint.com/spring-boot-jpa
