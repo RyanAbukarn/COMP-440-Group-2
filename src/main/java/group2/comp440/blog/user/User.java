@@ -18,6 +18,7 @@ import javax.persistence.UniqueConstraint;
 import javax.persistence.JoinColumn;
 
 import group2.comp440.blog.blog.Blog;
+import group2.comp440.blog.comment.Comment;
 
 @Entity(name = "User")
 @Table(name = "users", uniqueConstraints = { @UniqueConstraint(name = "user_email_unique", columnNames = "email") })
@@ -45,13 +46,14 @@ public class User {
     @Transient
     private String matchingPassword;
 
-    @OneToMany(mappedBy="user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Blog> blogs = new ArrayList<Blog>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<Comment>();
+
     @ManyToMany
-    @JoinTable(name = "follows",
-    joinColumns = @JoinColumn(name = "follower_id"),
-    inverseJoinColumns=@JoinColumn(name="user_following_id"))
+    @JoinTable(name = "follows", joinColumns = @JoinColumn(name = "follower_id"), inverseJoinColumns = @JoinColumn(name = "user_following_id"))
     private List<User> users_following;
 
     public User() {
@@ -117,15 +119,23 @@ public class User {
         this.matchingPassword = matchingPassword;
     }
 
-    public boolean isPasswordMatching(){
+    public boolean isPasswordMatching() {
         return this.password.equals(this.matchingPassword);
     }
 
-    public List<Blog> getBlogs(){
+    public List<Blog> getBlogs() {
         return blogs;
     }
 
-    public void setBlogs(List<Blog> blogs){
+    public void setBlogs(List<Blog> blogs) {
         this.blogs = blogs;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

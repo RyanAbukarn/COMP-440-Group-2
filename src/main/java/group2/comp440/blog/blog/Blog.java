@@ -1,5 +1,9 @@
 package group2.comp440.blog.blog;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,8 +11,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import group2.comp440.blog.comment.Comment;
 import group2.comp440.blog.user.User;
 
 @Entity(name = "Blog")
@@ -25,7 +31,6 @@ public class Blog {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    
     @Column(name = "tags", columnDefinition = "TEXT")
     private String tags;
 
@@ -35,14 +40,18 @@ public class Blog {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
-    public Blog(){}
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<Comment>();
+
+    public Blog() {
+    }
 
     public Blog(String subject, String description, String tags, String date_posted, User user) {
-       this.subject = subject;
-       this.description = description;
-       this.tags = tags;
-       this.date_posted = date_posted;
-       this.user = user;
+        this.subject = subject;
+        this.description = description;
+        this.tags = tags;
+        this.date_posted = date_posted;
+        this.user = user;
     }
 
     public long getId() {
@@ -58,26 +67,26 @@ public class Blog {
     }
 
     public void setDescription(String description) {
-       this.description = description;
+        this.description = description;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setTags(String tags){
+    public void setTags(String tags) {
         this.tags = tags;
     }
 
-    public String getTags(){
+    public String getTags() {
         return tags;
     }
 
-    public void setDate_Posted(String date_posted){
+    public void setDate_Posted(String date_posted) {
         this.date_posted = date_posted;
     }
 
-    public String getDate_Posted(){
+    public String getDate_Posted() {
         return date_posted;
     }
 
@@ -88,4 +97,17 @@ public class Blog {
     public User getUser() {
         return user;
     }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+    public void pushBackComment(Comment comment) {
+        this.comments.add(comment);
+    }
+
 }

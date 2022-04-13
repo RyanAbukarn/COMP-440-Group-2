@@ -10,12 +10,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import group2.comp440.blog.blog.Blog;
 import group2.comp440.blog.blog.BlogRepository;
+import group2.comp440.blog.comment.Comment;
 import group2.comp440.blog.user.User;
 import group2.comp440.blog.user.UserRepository;
 
@@ -73,5 +75,46 @@ public class HomeController {
         blogRepository.save(blog);
 
         return "redirect:/";
+    }
+
+    @GetMapping("/blogs")
+    public String blogs(Model model) {
+        model.addAttribute("blogs", blogRepository.findAll());
+        return "blog/all_blogs";
+    }
+
+    @GetMapping("/blogs/{blog_id}/comment/new")
+    public String comment(Model model, @PathVariable("blog_id") long blog_id) {
+        Blog blog = blogRepository.findById(blog_id).get();
+        model.addAttribute("blog", blog);
+        model.addAttribute("comment", new Comment());
+        return "comment/form";
+    }
+
+    @PostMapping("/blogs/{blog_id}/comment/post")
+    public String postComment(Model model, Comment comment, @PathVariable("blog_id") long blog_id,
+            RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetails userDetails) {
+        Blog blog = blogRepository.findById(blog_id).get();
+        User currentUser = userRepository.findByUsername(userDetails.getUsername());
+
+        if (!currentUser.getBlogs().contains(blog)) {
+
+            blog.pushBackComment(comment);
+            redirectAttributes.addFlashAttribute("message", "Successfully added a comment");
+            redirectAttributes.addFlashAttribute("alertClass", "alert-success");
+            return "redirect:/blogs/" + blog_id;
+        } else {
+            redirectAttributes.addFlashAttribute("message", "Can't add a comment on your blog");
+            redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+            return "redirect:/blogs";
+        }
+
+    }
+
+    @GetMapping("/blogs/{blog_id}")
+    public String viewBlog(Model model, @PathVariable("blog_id") long blog_id) {
+        Blog blog = blogRepository.findById(blog_id).get();
+        model.addAttribute("blog", blog);
+        return "blog/view";
     }
 }
