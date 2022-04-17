@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import group2.comp440.blog.blog.Blog;
 import group2.comp440.blog.blog.BlogRepository;
 import group2.comp440.blog.comment.Comment;
+import group2.comp440.blog.comment.CommentRepository;
 import group2.comp440.blog.user.User;
 import group2.comp440.blog.user.UserRepository;
 
@@ -28,6 +29,9 @@ public class HomeController {
 
     @Autowired
     private BlogRepository blogRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @GetMapping("/")
     public String index(Model model, @AuthenticationPrincipal UserDetails userDetails) {
@@ -84,8 +88,36 @@ public class HomeController {
     }
 
     @GetMapping("/blogs/{blog_id}/comment/new")
-    public String comment(Model model, @PathVariable("blog_id") long blog_id) {
+    public String comment(Model model, @PathVariable("blog_id") long blog_id, @AuthenticationPrincipal UserDetails userDetails, 
+    RedirectAttributes redirectAttributes) {
         Blog blog = blogRepository.findById(blog_id).get();
+        User currentUser = userRepository.findByUsername(userDetails.getUsername());
+        List<Comment> comments = commentRepository.getAllByUser(currentUser);
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String format = formatter.format(date);
+        int count = 0;
+        for (Comment i : comments){
+            if (i.getBlog() == blog){
+                redirectAttributes.addFlashAttribute("message", "Can't comment more then once on a post");
+                redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+                return "redirect:/blogs";
+            }
+            if (i.getDate_Posted().compareTo(format) == 0) {
+                count++;
+            }
+            if (count == 3) {
+                redirectAttributes.addFlashAttribute("message", "Can't create more than 3 comments a day");
+                redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+                return "redirect:/";
+            }
+
+        }
+        if (blog.getUser() == currentUser){
+            redirectAttributes.addFlashAttribute("message", "Can't add a comment on your blog");
+            redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
+            return "redirect:/blogs";
+        }
         model.addAttribute("blog", blog);
         model.addAttribute("comment", new Comment());
         return "comment/form";
@@ -93,13 +125,23 @@ public class HomeController {
 
     @PostMapping("/blogs/{blog_id}/comment/post")
     public String postComment(Model model, Comment comment, @PathVariable("blog_id") long blog_id,
-            RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetails userDetails) {
+            RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam("description") String description, @RequestParam("sentiment") Boolean sentiment) {
         Blog blog = blogRepository.findById(blog_id).get();
         User currentUser = userRepository.findByUsername(userDetails.getUsername());
-
+        Date date = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String format = formatter.format(date);
         if (!currentUser.getBlogs().contains(blog)) {
-
-            blog.pushBackComment(comment);
+            comment.setDescription(description);
+            comment.setSentiment(sentiment);
+            comment.setUser(currentUser);
+            comment.setBlog(blog);
+            comment.setDate_Posted(format);
+            commentRepository.save(comment);
+            // doesn't work - not sure why
+            // blog.pushBackComment(comment);
+            // blogRepository.save(blog);
             redirectAttributes.addFlashAttribute("message", "Successfully added a comment");
             redirectAttributes.addFlashAttribute("alertClass", "alert-success");
             return "redirect:/blogs/" + blog_id;
