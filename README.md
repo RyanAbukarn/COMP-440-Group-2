@@ -5,9 +5,9 @@
 https://www.youtube.com/watch?v=a8WwdKV8OjM
 
 ## Member Contributions
-Jozsef Feher - Login and Signup pages with validation
+Jozsef Feher - Login and Signup pages with validation, Blog Posts, ER Diagram
 
-Ryan Abukarn - Project initialization with user table and Initialize Database option for user
+Ryan Abukarn - Project initialization with user table and Initialize Database option for user, Comment Posts
 
 ## Sources Used
 Spring Boot Registration and Login with MySQL Database Tutorial
