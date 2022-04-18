@@ -1,8 +1,12 @@
 # COMP-440-Group-2
 
-## Youtube Video - Demo
+## Youtube Video - Demo Phase 1
 
 https://www.youtube.com/watch?v=a8WwdKV8OjM
+
+## Youtube Video - Demo Phase 2
+
+https://youtu.be/D5Er6lnOnt4
 
 ## Member Contributions
 Jozsef Feher - Login and Signup pages with validation, Blog Posts, ER Diagram
