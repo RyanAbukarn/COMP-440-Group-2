@@ -126,7 +126,7 @@ VALUES
 
 INSERT INTO `users` (`id`, `email`, `first_name`, `last_name`, `password`, `username`)
 VALUES
-	(3, 'b@outlook.com', 'Bruce', 'Wayne', '$2a$10$Qtvmf6F024oX1PMA7gehG.MzV9yiZmWPgI8YU3UUEERqFcomYJeBe', 'j123');
+	(3, 'b@outlook.com', 'Bruce', 'Wayne', '$2a$10$Qtvmf6F024oX1PMA7gehG.MzV9yiZmWPgI8YU3UUEERqFcomYJeBe', 'b123');
 	
 	INSERT INTO `users` (`id`, `email`, `first_name`, `last_name`, `password`, `username`)
 VALUES

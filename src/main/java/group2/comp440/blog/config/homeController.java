@@ -110,7 +110,7 @@ public class HomeController {
             if (count == 3) {
                 redirectAttributes.addFlashAttribute("message", "Can't create more than 3 comments a day");
                 redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
-                return "redirect:/";
+                return "redirect:/blogs";
             }
 
         }

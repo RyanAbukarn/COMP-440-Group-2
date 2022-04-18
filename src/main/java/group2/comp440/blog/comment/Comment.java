@@ -101,6 +101,10 @@ public class Comment {
         return date_posted;
     }
 
+    public String getSentimentAsString(){
+        if (sentiment) return "Positive";
+        return "Negative";
+    }
 
 
 }

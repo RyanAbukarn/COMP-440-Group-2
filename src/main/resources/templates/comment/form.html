@@ -12,6 +12,8 @@
 </head>
 
 <body>
+    <h4><a th:href="@{/}">Home Page</a></h4>
+    <h4><a th:href="@{/blogs}">View Blog posts</a></h4>
     <div class="container text-center">
         <h1>Create new comment!</h1>
         <form method="POST" th:action="@{/blogs/__${blog.getId()}__/comment/post}">

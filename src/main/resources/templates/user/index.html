@@ -11,6 +11,7 @@
 </head>
 <body>
     <div class="container text-center">
+        <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}" />
         <h1>Welcome to Blog Website, [[${user.firstName}]] [[${user.lastName}]]</h1>
         <h3><a th:href="@{/blog}">Create new blog</a></h3>
         <h3><a th:href="@{/blogs}">View Blog posts</a></h3>

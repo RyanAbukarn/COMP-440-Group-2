@@ -186,21 +186,23 @@
 
 <center>
     <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}" />
+    <h4><a th:href="@{/}">Home Page</a></h4>
     <header>
-        <h1>Header of Blog</h1>
+        <h1>Blogs</h1>
     </header>
     <main>
         <section>
             <article th:each="blog : ${blogs}">
                 <div class="articleimg">
                     <div class="articletxt">
-                        <h2 th:text="${blog.getTags()}"></h2>
-                        <h2 th:text="${blog.getDate_Posted()}"></h2>
+                        <h2 th:text="'User: ' + ${blog.getUser().firstName} + ' ' + ${blog.getUser().lastName}"></h2>
+                        <h2 th:text="'Tags: ' + ${blog.getTags()}"></h2>
+                        <h2 th:text="'Date: ' + ${blog.getDate_Posted()}"></h2>
                     </div>
                 </div>
                 <div class="articletxt">
-                    <div class="articlefooter" th:text="${blog.getSubject()}"> </div>
-                    <p th:text="${blog.getDescription()}"></p>
+                    <div class="articlefooter" th:text="'Subject: ' + ${blog.getSubject()}"> </div>
+                    <p th:text="'Description: ' + ${blog.getDescription()}"></p>
                     <a th:href="@{/blogs/__${blog.getId()}__/comment/new}" class="btn"> Add Comment</a>
                     <a th:href="@{/blogs/__${blog.getId()}__}" class="btn"> Comments</a>
 
