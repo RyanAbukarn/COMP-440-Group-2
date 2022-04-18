@@ -15,6 +15,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
+
+import groovy.transform.ToString;
+
 import javax.persistence.JoinColumn;
 
 import group2.comp440.blog.blog.Blog;
@@ -137,5 +140,9 @@ public class User {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public String fullName() {
+        return this.lastName + ", " + this.firstName;
     }
 }

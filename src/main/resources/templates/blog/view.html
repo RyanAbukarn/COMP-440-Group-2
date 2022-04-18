@@ -11,32 +11,23 @@
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 
-<div class="d-flex align-items-center justify-content-center vh-100">
+<div class="d-flex align-items-center">
     <div class="container">
         <div class="row justify-content-center mb-4">
             <div class="col-lg-8">
-                <h5>2 Comments</h5>
+                <span>Total Comments:</span>
+                <h5 th:text="${comments.size()}"></h5>
             </div>
         </div>
         <div class="row justify-content-center mb-4">
             <div class="col-lg-8">
                 <div class="comments">
                     <div class="comment d-flex mb-4">
-                        <div class="flex-shrink-0">
-                            <div class="avatar avatar-sm rounded-circle">
-                                <img class="avatar-img" src="https://uifaces.co/our-content/donated/AW-rdWlG.jpg"
-                                    alt="">
-                            </div>
-                        </div>
-                        <div class="flex-grow-1 ms-2 ms-sm-3">
+                        <div th:each="user_comment : ${comments}" class="flex-grow-1 ms-2 ms-sm-3">
                             <div class="comment-meta d-flex align-items-baseline">
-                                <h6 class="me-2">Name</h6>
-                                <span class="text-muted">2d</span>
+                                <h6 class="me-2" th:text="${user_comment.user.fullName()}"></h6>
                             </div>
-                            <div class="comment-body">
-                                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Non minima ipsum at amet
-                                doloremque qui magni, placeat deserunt pariatur itaque laudantium impedit aliquam
-                                eligendi repellendus excepturi quibusdam nobis esse accusantium.
+                            <div th:text="${user_comment.description}" class="comment-body">
                             </div>
                         </div>
                     </div>

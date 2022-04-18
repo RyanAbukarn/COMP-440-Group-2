@@ -88,8 +88,9 @@ public class HomeController {
     }
 
     @GetMapping("/blogs/{blog_id}/comment/new")
-    public String comment(Model model, @PathVariable("blog_id") long blog_id, @AuthenticationPrincipal UserDetails userDetails, 
-    RedirectAttributes redirectAttributes) {
+    public String comment(Model model, @PathVariable("blog_id") long blog_id,
+            @AuthenticationPrincipal UserDetails userDetails,
+            RedirectAttributes redirectAttributes) {
         Blog blog = blogRepository.findById(blog_id).get();
         User currentUser = userRepository.findByUsername(userDetails.getUsername());
         List<Comment> comments = commentRepository.getAllByUser(currentUser);
@@ -97,8 +98,8 @@ public class HomeController {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         String format = formatter.format(date);
         int count = 0;
-        for (Comment i : comments){
-            if (i.getBlog() == blog){
+        for (Comment i : comments) {
+            if (i.getBlog() == blog) {
                 redirectAttributes.addFlashAttribute("message", "Can't comment more then once on a post");
                 redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
                 return "redirect:/blogs";
@@ -113,7 +114,7 @@ public class HomeController {
             }
 
         }
-        if (blog.getUser() == currentUser){
+        if (blog.getUser() == currentUser) {
             redirectAttributes.addFlashAttribute("message", "Can't add a comment on your blog");
             redirectAttributes.addFlashAttribute("alertClass", "alert-danger");
             return "redirect:/blogs";
@@ -128,6 +129,7 @@ public class HomeController {
             RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam("description") String description, @RequestParam("sentiment") Boolean sentiment) {
         Blog blog = blogRepository.findById(blog_id).get();
+        System.out.println("heeeeeeeeeee" + blog_id);
         User currentUser = userRepository.findByUsername(userDetails.getUsername());
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -139,9 +141,8 @@ public class HomeController {
             comment.setBlog(blog);
             comment.setDate_Posted(format);
             commentRepository.save(comment);
-            // doesn't work - not sure why
-            // blog.pushBackComment(comment);
-            // blogRepository.save(blog);
+            blog.pushBackComment(comment);
+            blogRepository.save(blog);
             redirectAttributes.addFlashAttribute("message", "Successfully added a comment");
             redirectAttributes.addFlashAttribute("alertClass", "alert-success");
             return "redirect:/blogs/" + blog_id;
@@ -156,7 +157,7 @@ public class HomeController {
     @GetMapping("/blogs/{blog_id}")
     public String viewBlog(Model model, @PathVariable("blog_id") long blog_id) {
         Blog blog = blogRepository.findById(blog_id).get();
-        model.addAttribute("blog", blog);
+        model.addAttribute("comments", blog.getComments());
         return "blog/view";
     }
 }

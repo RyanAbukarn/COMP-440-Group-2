@@ -185,6 +185,7 @@
 </head>
 
 <center>
+    <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}" />
     <header>
         <h1>Header of Blog</h1>
     </header>
@@ -201,6 +202,8 @@
                     <div class="articlefooter" th:text="${blog.getSubject()}"> </div>
                     <p th:text="${blog.getDescription()}"></p>
                     <a th:href="@{/blogs/__${blog.getId()}__/comment/new}" class="btn"> Add Comment</a>
+                    <a th:href="@{/blogs/__${blog.getId()}__}" class="btn"> Comments</a>
+
                 </div>
             </article>
         </section>
