@@ -196,7 +196,7 @@
                 <div class="articleimg">
                     <div class="articletxt">
                         <h2 th:text="'User: ' + ${blog.getUser().firstName} + ' ' + ${blog.getUser().lastName}"></h2>
-                        <h2 th:text="'Tags: ' + ${blog.getTags()}"></h2>
+                        <h2 th:text="'Tags: ' + ${blog.getTagsAsString()}"></h2>
                         <h2 th:text="'Date: ' + ${blog.getDate_Posted()}"></h2>
                     </div>
                 </div>

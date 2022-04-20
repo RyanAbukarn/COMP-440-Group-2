@@ -1,14 +1,18 @@
 package group2.comp440.blog.user;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -16,12 +20,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
-import groovy.transform.ToString;
-
-import javax.persistence.JoinColumn;
-
 import group2.comp440.blog.blog.Blog;
 import group2.comp440.blog.comment.Comment;
+import group2.comp440.blog.hobby.Hobby;
 
 @Entity(name = "User")
 @Table(name = "users", uniqueConstraints = { @UniqueConstraint(name = "user_email_unique", columnNames = "email") })
@@ -48,6 +49,10 @@ public class User {
 
     @Transient
     private String matchingPassword;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "user_hobbies", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "hobby_id", referencedColumnName = "id"))
+    private Set<Hobby> hobbies = new HashSet<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Blog> blogs = new ArrayList<Blog>();
@@ -144,5 +149,13 @@ public class User {
 
     public String fullName() {
         return this.lastName + ", " + this.firstName;
+    }
+
+    public Set<Hobby> getHobbies(){
+        return hobbies;
+    }
+
+    public void setHobbies(Set<Hobby> hobbies){
+        this.hobbies = hobbies;
     }
 }

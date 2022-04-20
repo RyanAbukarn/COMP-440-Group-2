@@ -1,8 +1,12 @@
 package group2.comp440.blog.config;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +23,10 @@ import group2.comp440.blog.blog.Blog;
 import group2.comp440.blog.blog.BlogRepository;
 import group2.comp440.blog.comment.Comment;
 import group2.comp440.blog.comment.CommentRepository;
+import group2.comp440.blog.hobby.Hobby;
+import group2.comp440.blog.hobby.HobbyRepository;
+import group2.comp440.blog.tag.Tag;
+import group2.comp440.blog.tag.TagRepository;
 import group2.comp440.blog.user.User;
 import group2.comp440.blog.user.UserRepository;
 
@@ -32,6 +40,12 @@ public class HomeController {
 
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    private TagRepository tagRepository;
+
+    @Autowired
+    private HobbyRepository hobbyRepository;
 
     @GetMapping("/")
     public String index(Model model, @AuthenticationPrincipal UserDetails userDetails) {
@@ -73,7 +87,34 @@ public class HomeController {
         Blog blog = new Blog();
         blog.setSubject(subject);
         blog.setDescription(description);
-        blog.setTags(tags);
+
+        // Will try to work on later to optimize (code works for now)
+        // we want data from String [] myData to be connect as tags of a blog
+        // if the tag is already created, we only want to link the tag to the blog post
+        // if the tag doesn't exist, create the tag and then link it to the blog post
+        String [] myData = tags.split(",");
+        List<Tag> tagsFromTable = tagRepository.findAll();
+        List<String> names = new ArrayList<>();
+        Set<Tag> blogTags = blog.getTags();
+        for (Tag i : tagsFromTable){
+            names.add(i.getName());
+        }
+        for (String s : myData){
+            if (Character.isWhitespace(s.charAt(0))){
+                s = s.substring(1);
+            }
+            Tag e;
+            if (names.contains(s.toLowerCase())){
+                e = tagRepository.getByName(s.toLowerCase());
+            } else{
+                e = new Tag();
+                e.setName(s.toLowerCase());
+                tagRepository.save(e);
+            }
+            blogTags.add(e);
+        }
+        blog.setTags(blogTags);
+
         blog.setUser(currentUser);
         blog.setDate_Posted(format);
         blogRepository.save(blog);
@@ -159,5 +200,32 @@ public class HomeController {
         Blog blog = blogRepository.findById(blog_id).get();
         model.addAttribute("comments", blog.getComments());
         return "blog/view";
+    }
+
+    @GetMapping("/profile")
+    public String getProfile(Model model, @AuthenticationPrincipal UserDetails userDetails){
+        User currentUser = userRepository.findByUsername(userDetails.getUsername());
+        model.addAttribute("user", currentUser);
+
+        List<Hobby> hobbies = hobbyRepository.findAll();
+        HashMap<String, Boolean> userHobbies = new HashMap<String, Boolean>();
+        for (Hobby userHobby : currentUser.getHobbies()){
+            userHobbies.put(userHobby.getName(), true);
+        }
+        model.addAttribute("userHobbies", userHobbies);
+        model.addAttribute("hobbies", hobbies);
+        return "user/edit_profile.html";
+    }
+
+    @PostMapping("/profile")
+    public String getProfile(@RequestParam("hobbies") List<Long> hobbies, RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetails userDetails){
+        User currentUser = userRepository.findByUsername(userDetails.getUsername());
+        currentUser.getHobbies().clear();
+        Set<Hobby> hobbySet = new HashSet<>(hobbyRepository.findAllById(hobbies));
+        currentUser.setHobbies(hobbySet);
+        userRepository.save(currentUser);
+        redirectAttributes.addFlashAttribute("message", "Success");
+        redirectAttributes.addFlashAttribute("alertClass", "alert-success");
+        return "redirect:/profile";
     }
 }
