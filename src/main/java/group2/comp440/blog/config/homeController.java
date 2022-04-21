@@ -60,7 +60,7 @@ public class HomeController {
         List<Blog> blogs = blogRepository.getAllByUser(currentUser);
         int count = 0;
         Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         String format = formatter.format(date);
 
         for (Blog i : blogs) {
@@ -82,7 +82,7 @@ public class HomeController {
             @AuthenticationPrincipal UserDetails userDetails, RedirectAttributes redirectAttributes) {
         User currentUser = userRepository.findByUsername(userDetails.getUsername());
         Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         String format = formatter.format(date);
         Blog blog = new Blog();
         blog.setSubject(subject);
@@ -136,7 +136,7 @@ public class HomeController {
         User currentUser = userRepository.findByUsername(userDetails.getUsername());
         List<Comment> comments = commentRepository.getAllByUser(currentUser);
         Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         String format = formatter.format(date);
         int count = 0;
         for (Comment i : comments) {
@@ -172,7 +172,7 @@ public class HomeController {
         Blog blog = blogRepository.findById(blog_id).get();
         User currentUser = userRepository.findByUsername(userDetails.getUsername());
         Date date = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
         String format = formatter.format(date);
         if (!currentUser.getBlogs().contains(blog)) {
             comment.setDescription(description);
@@ -224,7 +224,7 @@ public class HomeController {
         User currentUser = userRepository.findByUsername(userDetails.getUsername());
         currentUser.pushBackFollower(userRepository.findById(user_id).get());
         userRepository.save(currentUser);
-        return "redirect: users/" + user_id;
+        return "redirect:/users/" + user_id;
     }
 
     @GetMapping("users/{user_id}/unfollow")
@@ -233,7 +233,7 @@ public class HomeController {
         User currentUser = userRepository.findByUsername(userDetails.getUsername());
         currentUser.popBackFollower(userRepository.findById(user_id).get());
         userRepository.save(currentUser);
-        return "redirect: users/" + user_id;
+        return "redirect:/users/" + user_id;
     }
 
     @GetMapping("/profile")
@@ -263,4 +263,45 @@ public class HomeController {
         redirectAttributes.addFlashAttribute("alertClass", "alert-success");
         return "redirect:/profile";
     }
+
+    @GetMapping("/query")
+    public String getQueries(){
+        return "user/query_data.html";
+    }
+
+    @PostMapping("/query_1")
+    public String postQueries1(RedirectAttributes redirectAttributes, @RequestParam("tag_x") String tag_x, @RequestParam("tag_y") String tag_y){
+        List<User> users = userRepository.Query1(tag_x, tag_y);
+        redirectAttributes.addFlashAttribute("users", users);
+        return "redirect:/query";
+    }
+
+    @PostMapping("/query_2")
+    public String postQueries2(RedirectAttributes redirectAttributes, @RequestParam("username") String username){
+        User user = userRepository.findByUsername(username);
+        List<Blog> blogs = userRepository.Query2(user);
+        redirectAttributes.addFlashAttribute("blogs", blogs);
+        return "redirect:/query";
+    }
+
+    @PostMapping("/query_3")
+    public String postQueries3(RedirectAttributes redirectAttributes){
+        List<User> users = userRepository.Query3();
+        redirectAttributes.addFlashAttribute("users", users);
+        return "redirect:/query";
+    }
+
+    @PostMapping("/query_4")
+    public String postQueries4(RedirectAttributes redirectAttributes, @RequestParam("username_x") String username_x, @RequestParam("username_y") String username_y){
+        User user1 = userRepository.findByUsername(username_x);
+        User user2 = userRepository.findByUsername(username_y);
+        Long id1 = user1.getId();
+        Long id2 = user2.getId();
+        List<User> users = userRepository.Query4(id1, id2);
+
+        redirectAttributes.addFlashAttribute("users", users);
+        return "redirect:/query";
+    }
+
+    
 }

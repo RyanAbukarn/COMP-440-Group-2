@@ -121,7 +121,9 @@ public class Blog {
         for (Tag i : this.tags){
             s += i.getName() + ", ";
         }
-        return s.substring(0, s.length()-2);
+        if (this.tags.size() > 0)
+            return s.substring(0, s.length()-2);
+        return "";
     }
 
 }
