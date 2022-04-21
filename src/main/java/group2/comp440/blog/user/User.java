@@ -151,11 +151,32 @@ public class User {
         return this.lastName + ", " + this.firstName;
     }
 
-    public Set<Hobby> getHobbies(){
+    public Set<Hobby> getHobbies() {
         return hobbies;
     }
 
-    public void setHobbies(Set<Hobby> hobbies){
+    public void setHobbies(Set<Hobby> hobbies) {
         this.hobbies = hobbies;
     }
+
+    public List<User> getUsers_following() {
+        return users_following;
+    }
+
+    public void setUsers_following(List<User> users_following) {
+        this.users_following = users_following;
+    }
+
+    public void pushBackFollower(User user_following) {
+        this.users_following.add(user_following);
+    }
+
+    public void popBackFollower(User user_following) {
+        this.users_following.remove(user_following);
+    }
+
+    public Boolean hasFollowed(User user_following) {
+        return this.users_following.contains(user_following);
+    }
+
 }

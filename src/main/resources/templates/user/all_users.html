@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/layout}">
+
+<head>
+    <title>Users</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <style>
+        table {
+            width: 700px;
+            text-align: center;
+            border: 1px solid #fff;
+            border-spacing: 1px;
+            font-family: 'Cairo', sans-serif;
+            margin: auto;
+        }
+
+        caption {
+            font-weight: bold;
+        }
+
+        table td {
+            padding: 10px;
+            background-color: #eee;
+        }
+
+        table th {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+        }
+
+        img {
+            width: 90px;
+            height: 90px;
+        }
+
+        .view,
+        .delete {
+            border: none;
+            padding: 5px 10px;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .view {
+            background-color: #03A9F4;
+        }
+
+        .delete {
+            background-color: #E91E63;
+        }
+
+        .tablefoot {
+            padding: 0;
+            border-bottom: 3px solid #009688;
+        }
+    </style>
+</head>
+
+
+<section layout:fragment="content">
+    <caption>Users</caption>
+    <table>
+        <thead>
+            <tr>
+                <th scope="col">Full name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Action</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.fullName()}" />
+                <td th:text="${user.getEmail()}" />
+                <td>
+                    <a th:href="@{/users/__${user.getId()}__}">View</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+</body>
+
+</html>

@@ -8,10 +8,6 @@ use `projdb`;
 DROP TABLE IF EXISTS `instructor`;
 DROP TABLE IF EXISTS `course`;
 DROP TABLE IF EXISTS `department`;
-DROP TABLE IF EXISTS `comments`;
-DROP TABLE IF EXISTS `blogs`;
-DROP TABLE IF EXISTS `follows`;
-DROP TABLE IF EXISTS `users`;
 
 CREATE TABLE `department` (
   `dept_name` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
@@ -65,60 +61,32 @@ CREATE TABLE `instructor` (
 
 INSERT INTO `instructor` VALUES ('14365','Lembr','Accounting',32241.56),('15347','Bawa','Athletics',72140.88),('19368','Wieland','Pol. Sci.',124651.41),('22591','DAgostino','Psychology',59706.49),('25946','Liley','Languages',90891.69),('28097','Kean','English',35023.18),('28400','Atanassov','Statistics',84982.92),('3199','Gustafsson','Elec. Eng.',82534.37),('3335','Bourrier','Comp. Sci.',80797.83),('34175','Bondi','Comp. Sci.',115469.11),('36897','Morris','Marketing',43770.36),('41930','Tung','Athletics',50482.03),('4233','Luo','English',88791.45),('42782','Vicentino','Elec. Eng.',34272.67),('43779','Romero','Astronomy',79070.08),('48507','Lent','Mech. Eng.',107978.47),('48570','Sarkar','Pol. Sci.',87549.80),('50330','Shuming','Physics',108011.81),('63287','Jaekel','Athletics',103146.87),('6569','Mingoz','Finance',105311.38),('65931','Pimenta','Cybernetics',79866.95),('73623','Sullivan','Elec. Eng.',90038.09),('74420','Voronina','Physics',121141.99),('77346','Mahmoud','Geology',99382.59),('79081','Ullman ','Accounting',47307.10),('80759','Queiroz','Biology',45538.32),('81991','Valtchev','Biology',77036.18),('90376','Bietzk','Cybernetics',117836.50),('90643','Choll','Statistics',57807.09),('95709','Sakurai','English',118143.98),('99052','Dale','Cybernetics',93348.83);
 
--- Create syntax for TABLE 'users'
-CREATE TABLE `users` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `email` text NOT NULL,
-  `first_name` text NOT NULL,
-  `last_name` text NOT NULL,
-  `password` text NOT NULL,
-  `username` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `tags` (`id`, `name`) VALUES (1, 'earth');
 
--- Create syntax for TABLE 'blogs'
-CREATE TABLE `blogs` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `date_posted` text,
-  `description` text,
-  `subject` text,
-  `tags` text,
-  `user_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FKpg4damav6db6a6fh5peylcni5` (`user_id`),
-  CONSTRAINT `FKpg4damav6db6a6fh5peylcni5` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `tags` (`id`, `name`) VALUES (2, 'plant');
 
--- Create syntax for TABLE 'comments'
-CREATE TABLE `comments` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `date_posted` text,
-  `description` varchar(255) DEFAULT NULL,
-  `sentiment` bit(1) NOT NULL,
-  `blog_id` bigint(20) DEFAULT NULL,
-  `user_id` bigint(20) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `FK9aakob3a7aghrm94k9kmbrjqd` (`blog_id`),
-  KEY `FK8omq0tc18jd43bu5tjh6jvraq` (`user_id`),
-  CONSTRAINT `FK8omq0tc18jd43bu5tjh6jvraq` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `FK9aakob3a7aghrm94k9kmbrjqd` FOREIGN KEY (`blog_id`) REFERENCES `blogs` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `tags` (`id`, `name`) VALUES (3, 'engineering');
 
--- Create syntax for TABLE 'follows'
-CREATE TABLE `follows` (
-  `follower_id` bigint(20) NOT NULL,
-  `user_following_id` bigint(20) NOT NULL,
-  KEY `FK8605lvonutjrl84m6cq0kenv0` (`user_following_id`),
-  KEY `FKqnkw0cwwh6572nyhvdjqlr163` (`follower_id`),
-  CONSTRAINT `FK8605lvonutjrl84m6cq0kenv0` FOREIGN KEY (`user_following_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `FKqnkw0cwwh6572nyhvdjqlr163` FOREIGN KEY (`follower_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO `tags` (`id`, `name`) VALUES (4, 'PC');
 
+INSERT INTO `tags` (`id`, `name`) VALUES (5, 'Best Buy');
+
+INSERT INTO `tags` (`id`, `name`) VALUES (6, 'USA');
+
+INSERT INTO `tags` (`id`, `name`) VALUES (7, 'State');
+
+INSERT INTO `tags` (`id`, `name`) VALUES (8, 'electronics');
+
+INSERT INTO `tags` (`id`, `name`) VALUES (9, 'geography');
+
+INSERT INTO `tags` (`id`, `name`) VALUES (10, 'vehicles');
+
+INSERT INTO `tags` (`id`, `name`) VALUES (11, 'coding');
 
 
 INSERT INTO `users` (`id`, `email`, `first_name`, `last_name`, `password`, `username`)
 VALUES
-	(1, 'j@outlook.com', 'Ryan', 'Abukarn', '$2a$10$Qtvmf6F024oX1PMA7gehG.MzV9yiZmWPgI8YU3UUEERqFcomYJeBe', 'r123');
+	(1, 'r@outlook.com', 'Ryan', 'Abukarn', '$2a$10$Qtvmf6F024oX1PMA7gehG.MzV9yiZmWPgI8YU3UUEERqFcomYJeBe', 'r123');
 
 INSERT INTO `users` (`id`, `email`, `first_name`, `last_name`, `password`, `username`)
 VALUES
@@ -136,29 +104,46 @@ VALUES
 VALUES
 	(5, 'p@outlook.com', 'Peter', 'Parker', '$2a$10$Qtvmf6F024oX1PMA7gehG.MzV9yiZmWPgI8YU3UUEERqFcomYJeBe', 'p123');
 
-INSERT INTO `blogs` (`date_posted`, `description`, `subject`, `tags`, `user_id`)
+INSERT INTO `blogs` (`id`,`date_posted`, `description`, `subject`, `user_id`)
 VALUES
-	('2022-04-13', 'into a perfect storm, the environment, the global economic system and geopolitics are all undergoing rapid, uncontrolled change. In the same way that the climate is in a state of flux, exhibiting erratic behavior before settling into a new norm, ', 'Global warring', 'earth,plant', 1);
+	(1,'2022-04-13', 'into a perfect storm, the environment, the global economic system and geopolitics are all undergoing rapid, uncontrolled change. In the same way that the climate is in a state of flux, exhibiting erratic behavior before settling into a new norm, ', 'Global warring', 1);
+
+INSERT INTO `blog_tags` (`blog_id`, `tag_id`) VALUES (1, 1);
+INSERT INTO `blog_tags` (`blog_id`, `tag_id`) VALUES (1, 2);
+
 	
-	
-	INSERT INTO `blogs` (`date_posted`, `description`, `subject`, `tags`, `user_id`)
+INSERT INTO `blogs` (`id`,`date_posted`, `description`, `subject`, `user_id`)
 VALUES
-	('2022-04-13', 'A car (or automobile) is a wheeled motor vehicle used for transportation. Most definitions of cars say that they run primarily on roads, seat one to eight people, have four wheels, and mainly transport people rather than goods.', 'Cars', 'engineering', 2);
+	(2,'2022-04-13', 'A car (or automobile) is a wheeled motor vehicle used for transportation. Most definitions of cars say that they run primarily on roads, seat one to eight people, have four wheels, and mainly transport people rather than goods.', 'Cars', 2);
+
+INSERT INTO `blog_tags` (`blog_id`, `tag_id`) VALUES (2, 10);
+INSERT INTO `blog_tags` (`blog_id`, `tag_id`) VALUES (2, 3);
 
 
-INSERT INTO `blogs` (`date_posted`, `description`, `subject`, `tags`, `user_id`)
+INSERT INTO `blogs` (`id`,`date_posted`, `description`, `subject`, `user_id`)
 VALUES
-	('2022-04-13', "An airplane is a flying vehicle that has fixed wings and engines or propellers that thrust it forward through the air. It's most common when you travel long distances to take an airplane", 'Airplane', 'airplanes', 5);
+	(3,'2022-04-13', "An airplane is a flying vehicle that has fixed wings and engines or propellers that thrust it forward through the air. It's most common when you travel long distances to take an airplane", 'Airplane', 5);
 
+INSERT INTO `blog_tags` (`blog_id`, `tag_id`) VALUES (3, 10);
+INSERT INTO `blog_tags` (`blog_id`, `tag_id`) VALUES (3, 3);
 
-INSERT INTO `blogs` (`date_posted`, `description`, `subject`, `tags`, `user_id`)
+INSERT INTO `blogs` (`id`,`date_posted`, `description`, `subject`, `user_id`)
 VALUES
-	('2022-04-13', 'A laptop computer, sometimes called a notebook computer by manufacturers, is a battery- or AC-powered personal computer generally smaller than a briefcase that can easily be transported and conveniently used in temporary spaces such as on airplanes, in libraries, temporary offices, and at meetings.', 'Lapto[', 'pc,best buy', 3);
+	(4,'2022-04-13', 'A laptop computer, sometimes called a notebook computer by manufacturers, is a battery- or AC-powered personal computer generally smaller than a briefcase that can easily be transported and conveniently used in temporary spaces such as on airplanes, in libraries, temporary offices, and at meetings.', 'Laptop', 3);
+
+INSERT INTO `blog_tags` (`blog_id`, `tag_id`) VALUES (4, 4);
+INSERT INTO `blog_tags` (`blog_id`, `tag_id`) VALUES (4, 5);
+INSERT INTO `blog_tags` (`blog_id`, `tag_id`) VALUES (4, 11);
 
 
-INSERT INTO `blogs` (`date_posted`, `description`, `subject`, `tags`, `user_id`)
+INSERT INTO `blogs` (`id`,`date_posted`, `description`, `subject`, `user_id`)
 VALUES
-	('2022-04-13', 'Capital: Sacramento. California lies on the Pacific Ocean and is bordered by Mexico and the U.S. states of Oregon, Nevada, and Arizona. It is the largest state in population and the third largest in area, extending about 800 mi (1,300 km) north to south and 250 mi (400 km) east to wes', 'California', 'usa,state', 4);
+	(5,'2022-04-13', 'Capital: Sacramento. California lies on the Pacific Ocean and is bordered by Mexico and the U.S. states of Oregon, Nevada, and Arizona. It is the largest state in population and the third largest in area, extending about 800 mi (1,300 km) north to south and 250 mi (400 km) east to wes', 'California', 4);
+
+
+INSERT INTO `blog_tags` (`blog_id`, `tag_id`) VALUES (5, 6);
+INSERT INTO `blog_tags` (`blog_id`, `tag_id`) VALUES (5, 7);
+
 
 INSERT INTO `comments` (`id`, `blog_id`, `user_id`, `date_posted`, `description`, `sentiment`)
 VALUES
@@ -179,3 +164,5 @@ VALUES
     INSERT INTO `comments` (`id`, `blog_id`, `user_id`, `date_posted`, `description`, `sentiment`)
 VALUES
 	(5, 5, 5, '2022-04-13', 'Thanks', 0);
+
+

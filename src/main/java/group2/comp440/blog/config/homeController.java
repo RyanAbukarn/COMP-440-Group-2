@@ -92,21 +92,21 @@ public class HomeController {
         // we want data from String [] myData to be connect as tags of a blog
         // if the tag is already created, we only want to link the tag to the blog post
         // if the tag doesn't exist, create the tag and then link it to the blog post
-        String [] myData = tags.split(",");
+        String[] myData = tags.split(",");
         List<Tag> tagsFromTable = tagRepository.findAll();
         List<String> names = new ArrayList<>();
         Set<Tag> blogTags = blog.getTags();
-        for (Tag i : tagsFromTable){
+        for (Tag i : tagsFromTable) {
             names.add(i.getName());
         }
-        for (String s : myData){
-            if (Character.isWhitespace(s.charAt(0))){
+        for (String s : myData) {
+            if (Character.isWhitespace(s.charAt(0))) {
                 s = s.substring(1);
             }
             Tag e;
-            if (names.contains(s.toLowerCase())){
+            if (names.contains(s.toLowerCase())) {
                 e = tagRepository.getByName(s.toLowerCase());
-            } else{
+            } else {
                 e = new Tag();
                 e.setName(s.toLowerCase());
                 tagRepository.save(e);
@@ -170,7 +170,6 @@ public class HomeController {
             RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetails userDetails,
             @RequestParam("description") String description, @RequestParam("sentiment") Boolean sentiment) {
         Blog blog = blogRepository.findById(blog_id).get();
-        System.out.println("heeeeeeeeeee" + blog_id);
         User currentUser = userRepository.findByUsername(userDetails.getUsername());
         Date date = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -202,14 +201,49 @@ public class HomeController {
         return "blog/view";
     }
 
+    @GetMapping("users")
+    public String users(Model model) {
+        List<User> usersList = userRepository.findAll();
+        model.addAttribute("users", usersList);
+        return "user/all_users";
+    }
+
+    @GetMapping("users/{user_id}")
+    public String viewUser(@PathVariable("user_id") long user_id, Model model,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        User user = userRepository.findById(user_id).get();
+        User currentUser = userRepository.findByUsername(userDetails.getUsername());
+        model.addAttribute("followed", currentUser.hasFollowed(userRepository.findById(user_id).get()));
+        model.addAttribute("user", user);
+        return "user/view";
+    }
+
+    @GetMapping("users/{user_id}/follow")
+    public String followUser(@PathVariable("user_id") long user_id, Model model,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        User currentUser = userRepository.findByUsername(userDetails.getUsername());
+        currentUser.pushBackFollower(userRepository.findById(user_id).get());
+        userRepository.save(currentUser);
+        return "redirect: users/" + user_id;
+    }
+
+    @GetMapping("users/{user_id}/unfollow")
+    public String unFollowUser(@PathVariable("user_id") long user_id, Model model,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        User currentUser = userRepository.findByUsername(userDetails.getUsername());
+        currentUser.popBackFollower(userRepository.findById(user_id).get());
+        userRepository.save(currentUser);
+        return "redirect: users/" + user_id;
+    }
+
     @GetMapping("/profile")
-    public String getProfile(Model model, @AuthenticationPrincipal UserDetails userDetails){
+    public String getProfile(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         User currentUser = userRepository.findByUsername(userDetails.getUsername());
         model.addAttribute("user", currentUser);
 
         List<Hobby> hobbies = hobbyRepository.findAll();
         HashMap<String, Boolean> userHobbies = new HashMap<String, Boolean>();
-        for (Hobby userHobby : currentUser.getHobbies()){
+        for (Hobby userHobby : currentUser.getHobbies()) {
             userHobbies.put(userHobby.getName(), true);
         }
         model.addAttribute("userHobbies", userHobbies);
@@ -218,7 +252,8 @@ public class HomeController {
     }
 
     @PostMapping("/profile")
-    public String getProfile(@RequestParam("hobbies") List<Long> hobbies, RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetails userDetails){
+    public String getProfile(@RequestParam("hobbies") List<Long> hobbies, RedirectAttributes redirectAttributes,
+            @AuthenticationPrincipal UserDetails userDetails) {
         User currentUser = userRepository.findByUsername(userDetails.getUsername());
         currentUser.getHobbies().clear();
         Set<Hobby> hobbySet = new HashSet<>(hobbyRepository.findAllById(hobbies));
