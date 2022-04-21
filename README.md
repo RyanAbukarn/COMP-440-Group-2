@@ -14,8 +14,7 @@ Jozsef Feher - Login and Signup pages with validation, Blog Posts, ER Diagram
 Ryan Abukarn - Project initialization with user table and Initialize Database option for user, Comment Posts
 
 ## ER Diagram
-![image](https://user-images.githubusercontent.com/38539205/164557470-6a870d0b-258e-4cca-ad0a-f6318f1b9b77.png)
-
+![image](https://user-images.githubusercontent.com/38539205/164557814-71b509c7-e7ba-41a3-b00b-752d165b7570.png)
 
 ## Sources Used
 Spring Boot Registration and Login with MySQL Database Tutorial
