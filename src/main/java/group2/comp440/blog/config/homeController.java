@@ -198,6 +198,7 @@ public class HomeController {
     public String viewBlog(Model model, @PathVariable("blog_id") long blog_id) {
         Blog blog = blogRepository.findById(blog_id).get();
         model.addAttribute("comments", blog.getComments());
+        model.addAttribute("blog", blog);
         return "blog/view";
     }
 
@@ -215,6 +216,10 @@ public class HomeController {
         User currentUser = userRepository.findByUsername(userDetails.getUsername());
         model.addAttribute("followed", currentUser.hasFollowed(userRepository.findById(user_id).get()));
         model.addAttribute("user", user);
+        List<User> users_following = userRepository.getAllUsersFollowing(user_id);
+        model.addAttribute("users_following", users_following);
+        List<User> followers = userRepository.getAllFollowers(user_id);
+        model.addAttribute("followers", followers);
         return "user/view";
     }
 

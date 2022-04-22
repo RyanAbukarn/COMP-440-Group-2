@@ -13,6 +13,16 @@
 </head>
 <section layout:fragment="content">
     <br>
+    <div class="container text-center">
+        <h1>Blog</h1>
+        <label for="subject">Subject: </label>
+        <input readonly type="text" id="subject" name="subject" th:value="${blog.subject}"><br><br>
+        <label for="description">Description:</label>
+        <textarea  readonly id="description" name="description" rows="8" cols="75">[[${blog.description}]]</textarea><br><br>
+        <label for="tags">Tags: </label>
+        <textarea readonly id="tags" name="tags" rows="1" cols="50">[[${blog.getTagsAsString()}]]</textarea><br><br>
+    </div>
+    <br>
     <div class="d-flex align-items-center">
         <div class="container">
             <div class="row justify-content-center mb-4">
@@ -25,15 +35,21 @@
                 <div class="col-lg-8">
                     <div class="comments">
                         <div class="comment d-flex mb-4 flex-column">
-                            <div th:each="user_comment : ${comments}" class="flex-grow-1 ms-2 ms-sm-3">
-                                <div class="comment-meta d-flex align-items-baseline">
-                                    <h6 class="me-2" th:text="'User: ' + ${user_comment.user.fullName()}"></h6>
-                                    <span th:text="' - ' + ${user_comment.getDate_Posted}"> </span>
-                                </div>
-                                <div th:text="'Sentiment: ' + ${user_comment.getSentimentAsString()}"
-                                    class="comment-body">
-                                </div>
-                                <div th:text="'Comment: ' + ${user_comment.description}" class="comment-body">
+                            <div th:each="user_comment : ${comments}" class="flex-grow-1 ms-2 ms-sm-3" >
+                                <div style = "  border-radius: 25px;
+                                border: 2px solid #8ad5f3;
+                                width: 40%; 
+                                border-width: thick; padding-top: 5px; padding-bottom: 5px; padding-left: 10px;">
+                                    <div class="comment-meta d-flex align-items-baseline">
+                                        <h6 class="me-2" th:text="'User: ' + ${user_comment.user.fullName()}"></h6>
+                                        <span th:text="' - ' + ${user_comment.getDate_Posted}"> </span>
+                                    </div>
+                                    <div th:text="'Sentiment: ' + ${user_comment.getSentimentAsString()}"
+                                        class="comment-body">
+                                    </div>
+                                    <div th:text="'Comment: ' + ${user_comment.description}" class="comment-body">
+                                    </div>
+                                    <br>
                                 </div>
                                 <br>
                             </div>

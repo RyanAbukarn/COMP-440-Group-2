@@ -147,6 +147,37 @@
             </div>
         </aside>
     </center>
+
+    <table class="table" style="width: 40.00%; margin: 0 auto">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Users following</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user : ${users_following}">
+                <td><a th:href="@{/users/__${user.getId()}__}" th:text = "'@' + ${user.getUsername()}"></a>
+                    &nbsp; [[${user.fullName()}]]
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="table" style="width: 40.00%; margin: 0 auto">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Followers</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user : ${followers}">
+                <td><a th:href="@{/users/__${user.getId()}__}" th:text = "'@' + ${user.getUsername()}"></a>
+                    &nbsp; [[${user.fullName()}]]
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
 </section>
 
 

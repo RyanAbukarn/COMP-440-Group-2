@@ -14,26 +14,35 @@
 
 <body>
     <section layout:fragment="content">
-    <br>
-    <div class="container">
-        <h1>Edit hobbies</h1>
-            <div>
-                <span th:text="'Username ' + ${user.username}"></span>
-            </div>
+        <br>
         <form action="#" method="POST" th:action="@{/profile}">
+            <h3 style="text-align: center;">Edit Hobbies</h3>
+            <table class="table" style="width: 25.00%; margin: 0 auto">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Hobbies</th>
+                    </tr>
+                </thead>
 
-            
-            <div th:each="hobby: ${hobbies}">
-                <div>
-                    <input name="hobbies" th:value="${hobby.getId()}" type="checkbox" id="hobbies"
-                        th:checked="${userHobbies.get(hobby.getName())}">
-                    <span th:text="${hobby.getName()}"></span>
-                </div>
-            </div>
+                <tbody>
+                    <tr th:each="hobby : ${hobbies}">
+                        <td>
+                            <input name="hobbies" th:value="${hobby.getId()}" type="checkbox" id="hobbies"
+                                th:checked="${userHobbies.get(hobby.getName())}">
+                            <span th:text="${hobby.getName()}"></span>
+                        </td>
+                    </tr>
+
+                </tbody>
+
+            </table>
             <br>
-            <input type="submit" id="submit" value="Submit" class="fsp-button">
+            <input type="submit" id="submit" value="Submit" style="margin: 0;
+            position: absolute;
+            left: 50%;
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);">
         </form>
-    </div>
 
 </body>
 

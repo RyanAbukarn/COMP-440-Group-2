@@ -148,7 +148,7 @@ public class User {
     }
 
     public String fullName() {
-        return this.lastName + ", " + this.firstName;
+        return this.firstName + " " + this.lastName;
     }
 
     public Set<Hobby> getHobbies() {

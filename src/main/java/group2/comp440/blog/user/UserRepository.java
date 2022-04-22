@@ -17,6 +17,14 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByEmail(String email);
 
+    // Get All Users follwoing
+    @Query(nativeQuery = true, value = "select * from users where id IN (select user_following_id from follows where follower_id = ?1)")
+    List<User> getAllUsersFollowing(Long user_id);
+
+    // Get All followers
+    @Query(nativeQuery = true, value = "select * from users where id IN (select follower_id from follows where user_following_id = ?1)")
+    List<User> getAllFollowers(Long user_id);
+
     // #1
     @Query(nativeQuery = true, value = "select * from users where id IN(select b.user_id from blogs b, blog_tags bt, tags t where b.id=bt.blog_id AND bt.tag_id = t.id AND t.name = ?1 AND b.id NOT IN ( select b1.id from blogs b1, blog_tags bt, tags t where b1.id=bt.blog_id AND bt.tag_id = t.id AND t.name = ?2  ) AND users.id IN	(  select b1.user_id from blogs b1, blog_tags bt, tags t  where b1.id=bt.blog_id  AND bt.tag_id = t.id AND t.name = ?2 ) )")
     List<User> Query1(String X, String Y);
