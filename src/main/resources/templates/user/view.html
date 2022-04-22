@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/layout}">
 
 <head>
     <meta charset="ISO-8859-1">
@@ -123,22 +124,30 @@
             background-color: #5882d6;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous">
+        </script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 
-<center>
-    <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}" />
-    <aside id="bar">
-        <section>
-            <h3 th:text="${user.fullName()}"></h3>
-            <div id="desc">
-                <p></p>
+<section layout:fragment="content">
+    <center>
+        <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}" />
+        <aside id="bar">
+            <section>
+                <h3 th:text="${user.fullName()}"></h3>
+                <div id="desc">
+                    <p></p>
+                </div>
+            </section>
+            <div id="follow">
+                <a th:if="${followed}" th:href="@{/users/__${user.getId()}__/unfollow}">Unfollow</a>
+                <a th:unless="${followed}" th:href="@{/users/__${user.getId()}__/follow}">Follow</a>
             </div>
-        </section>
-        <div id="follow">
-            <a th:if="${followed}" th:href="@{/users/__${user.getId()}__/unfollow}">Unfollow</a>
-            <a th:unless="${followed}" th:href="@{/users/__${user.getId()}__/follow}">Follow</a>
-        </div>
-    </aside>
-</center>
+        </aside>
+    </center>
+</section>
+
 
 </html>

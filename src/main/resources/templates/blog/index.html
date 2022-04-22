@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/layout}">
 
 <head>
     <meta charset="ISO-8859-1">
@@ -12,7 +13,7 @@
 </head>
 
 <body>
-    <h4><a th:href="@{/}">Home Page</a></h4>
+    <section layout:fragment="content">
     <div class="container text-center">
         <h1>Create new Blog!</h1>
         <form method="POST" th:action="@{/blog}">

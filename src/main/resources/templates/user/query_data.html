@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layout/layout}">
 <head>
     <meta charset="ISO-8859-1">
     <title>Welcome to Blog Home</title>
@@ -10,17 +11,10 @@
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 <body>
+    <section layout:fragment="content">
     <div class="container text-center">
         <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}" />
         <h1>Welcome to Query Page</h1>
-        <h3><a th:href="@{/}">Home page</a></h3>
-        <h3><a th:href="@{/profile}">View profile to edit hobbies</a></h3>
-        <h3><a th:href="@{/blog}">Create new blog</a></h3>
-        <h3><a th:href="@{/blogs}">View Blog posts</a></h3>
-        <h3><a th:href="@{/initialize-database}">Initialize Database</a></h3>
-        <h3><a th:href="@{/users/logout}">Logout</a></h3>
-
-        
     </div>
     <div>
         <h3>1) List the users who post at least two blogs, one has a tag of “X”, and another has a 
