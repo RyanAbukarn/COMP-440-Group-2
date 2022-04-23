@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -313,14 +313,21 @@ public class HomeController {
     }
 
     @GetMapping("users/search/{query_id}")
-    public String postQueries9(Model model, @PathVariable("query_id") long query_id) {
-        Map<Long, List<User>> searchMap = new HashMap<Long, List<User>>();
-        searchMap.computeIfAbsent(6l, s -> userRepository.Query6());
-        searchMap.computeIfAbsent(7l, s -> userRepository.Query7());
-        searchMap.computeIfAbsent(8l, s -> userRepository.Query8());
-        searchMap.computeIfAbsent(9l, s -> userRepository.Query9());
-        model.addAttribute("users", searchMap.get(query_id));
-        return "user/all_users";
+    public String postQueries9(Model model, @PathVariable("query_id") Integer query_id) {
+        Map<Integer, List<User>> searchMap = new HashMap<Integer, List<User>>();
+        searchMap.computeIfAbsent(6, s -> userRepository.Query6());
+        searchMap.computeIfAbsent(7, s -> userRepository.Query7());
+        searchMap.computeIfAbsent(8, s -> userRepository.Query8());
+        searchMap.computeIfAbsent(9, s -> userRepository.Query9());
+        if (query_id == 5) {
+            model.addAttribute("listUsers", userRepository.Query5().stream().map(ids -> userRepository.findAllById(ids))
+                    .collect(Collectors.toList()));
+            return "user/pair_users";
+        } else {
+            model.addAttribute("users", searchMap.get(query_id));
+            return "user/all_users";
+        }
+
     }
 
 }

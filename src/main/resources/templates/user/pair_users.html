@@ -98,19 +98,18 @@
     <h1 style="text-align: center">Users</h1>
 
     <div class="button-row">
-        <a class="button is-active" th:href="@{/users/search/5}">Query 5: Query 5: Pair With Common Habit</a>
+        <a class="button is-active" th:href="@{/users/search/5}">Query 5: Pair With Common Habit</a>
         <a class="button is-active" th:href="@{/users/search/6}">Query 6: No Blogs</a>
         <a class="button is-active" th:href="@{/users/search/7}">Query 7: Post Negative Comment</a>
         <a class="button is-active" th:href="@{/users/search/8}">Query 8: Have Negative Comment</a>
         <a class="button is-active" th:href="@{/users/search/9}">Query 9: No Comments</a>
     </div>
-    <table>
+    <table th:each="users : ${listUsers}">
         <thead>
             <tr>
                 <th scope="col">Full name</th>
                 <th scope="col">Email</th>
                 <th scope="col">Action</th>
-
             </tr>
         </thead>
         <tbody>

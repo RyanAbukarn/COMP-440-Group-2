@@ -41,13 +41,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(nativeQuery = true, value = "select * from users where id IN (select user_following_id from follows where follower_id = ?1 AND user_following_id IN (select user_following_id from follows where follower_id = ?2))")
     List<User> Query4(Long x, Long y);
 
-    // @Query(nativeQuery = true, value = "SELECT p1.* as person1, p2.* as person2
-    // FROM ( SELECT user_id, group_concat(hobby_id ORDER BY hobby_id) as hobbies
-    // FROM user_hobbies GROUP BY user_id ) p1 JOIN ( SELECT user_id,
-    // group_concat(hobby_id ORDER BY hobby_id) as hobbies FROM user_hobbies GROUP
-    // BY user_id ) p2 on p2.user_id > p1.user_id and p2.hobbies = p1.hobbies ORDER
-    // BY person1, person2")
-    // List<User> Query5();
+    @Query(nativeQuery = true, value = "SELECT p1.user_id as person1, p2.user_id as person2 FROM ( SELECT user_id, group_concat(hobby_id ORDER BY hobby_id) as hobbies FROM user_hobbies GROUP BY user_id ) p1 JOIN ( SELECT user_id, group_concat(hobby_id ORDER BY hobby_id) as hobbies FROM user_hobbies GROUP BY user_id ) p2 on p2.user_id > p1.user_id and p2.hobbies = p1.hobbies ORDER BY person1, person2")
+    List<List<Long>> Query5();
 
     @Query("SELECT u FROM User u LEFT JOIN Blog b ON u.id = b.user WHERE b.user is null")
     List<User> Query6();
