@@ -55,12 +55,55 @@
             padding: 0;
             border-bottom: 3px solid #009688;
         }
+
+        .button-row {
+            display: flex;
+            margin: auto;
+            justify-content: center;
+        }
+
+        .button {
+            font: sans-serif;
+            font-size: 18px;
+            padding: 10px 15px;
+            background: #F8F8F8;
+            border: 1px solid #DDD;
+            border-right-width: 0;
+            border-radius: 0;
+        }
+
+        .button:hover {
+            background: #DEF;
+            cursor: pointer;
+        }
+
+        .button.is-active {
+            background: #19F;
+            color: white;
+        }
+
+        .button-row .button:first-child {
+            border-radius: 8px 0 0 8px;
+        }
+
+        .button-row .button:last-child {
+            border-right-width: 1px;
+            border-radius: 0 8px 8px 0;
+        }
     </style>
 </head>
 
 
 <section layout:fragment="content">
     <h1 style="text-align: center">Users</h1>
+
+    <div class="button-row">
+        <a class="button is-active" th:href="@{/users/search/5}">Query 5</a>
+        <a class="button is-active" th:href="@{/users/search/6}">Query 6</a>
+        <a class="button is-active" th:href="@{/users/search/7}">Query 7</a>
+        <a class="button is-active" th:href="@{/users/search/8}">Query 8</a>
+        <a class="button is-active" th:href="@{/users/search/9}">Query 9</a>
+    </div>
     <table>
         <thead>
             <tr>

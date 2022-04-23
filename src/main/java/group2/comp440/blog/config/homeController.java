@@ -6,7 +6,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -253,7 +255,7 @@ public class HomeController {
         }
         model.addAttribute("userHobbies", userHobbies);
         model.addAttribute("hobbies", hobbies);
-        return "user/edit_profile.html";
+        return "user/edit_profile";
     }
 
     @PostMapping("/profile")
@@ -270,19 +272,20 @@ public class HomeController {
     }
 
     @GetMapping("/query")
-    public String getQueries(){
-        return "user/query_data.html";
+    public String getQueries() {
+        return "user/query_data";
     }
 
     @PostMapping("/query_1")
-    public String postQueries1(RedirectAttributes redirectAttributes, @RequestParam("tag_x") String tag_x, @RequestParam("tag_y") String tag_y){
+    public String postQueries1(RedirectAttributes redirectAttributes, @RequestParam("tag_x") String tag_x,
+            @RequestParam("tag_y") String tag_y) {
         List<User> users = userRepository.Query1(tag_x, tag_y);
         redirectAttributes.addFlashAttribute("users", users);
         return "redirect:/query";
     }
 
     @PostMapping("/query_2")
-    public String postQueries2(RedirectAttributes redirectAttributes, @RequestParam("username") String username){
+    public String postQueries2(RedirectAttributes redirectAttributes, @RequestParam("username") String username) {
         User user = userRepository.findByUsername(username);
         List<Blog> blogs = userRepository.Query2(user);
         redirectAttributes.addFlashAttribute("blogs", blogs);
@@ -290,14 +293,15 @@ public class HomeController {
     }
 
     @PostMapping("/query_3")
-    public String postQueries3(RedirectAttributes redirectAttributes){
+    public String postQueries3(RedirectAttributes redirectAttributes) {
         List<User> users = userRepository.Query3();
         redirectAttributes.addFlashAttribute("users", users);
         return "redirect:/query";
     }
 
     @PostMapping("/query_4")
-    public String postQueries4(RedirectAttributes redirectAttributes, @RequestParam("username_x") String username_x, @RequestParam("username_y") String username_y){
+    public String postQueries4(RedirectAttributes redirectAttributes, @RequestParam("username_x") String username_x,
+            @RequestParam("username_y") String username_y) {
         User user1 = userRepository.findByUsername(username_x);
         User user2 = userRepository.findByUsername(username_y);
         Long id1 = user1.getId();
@@ -308,5 +312,15 @@ public class HomeController {
         return "redirect:/query";
     }
 
-    
+    @GetMapping("users/search/{query_id}")
+    public String postQueries9(Model model, @PathVariable("query_id") long query_id) {
+        Map<Long, List<User>> searchMap = new HashMap<Long, List<User>>();
+        searchMap.computeIfAbsent(6l, s -> userRepository.Query6());
+        searchMap.computeIfAbsent(7l, s -> userRepository.Query7());
+        searchMap.computeIfAbsent(8l, s -> userRepository.Query8());
+        searchMap.computeIfAbsent(9l, s -> userRepository.Query9());
+        model.addAttribute("users", searchMap.get(query_id));
+        return "user/all_users";
+    }
+
 }
