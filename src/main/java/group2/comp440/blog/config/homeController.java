@@ -33,7 +33,7 @@ import group2.comp440.blog.user.User;
 import group2.comp440.blog.user.UserRepository;
 
 @Controller
-public class HomeController {
+public class homeController {
     @Autowired
     private UserRepository userRepository;
 
