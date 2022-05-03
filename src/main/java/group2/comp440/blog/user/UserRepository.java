@@ -50,10 +50,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u LEFT JOIN Comment c ON u.id = c.user WHERE c.user is null")
     List<User> Query7();
 
-    @Query("SELECT u FROM User u JOIN Comment c ON u.id = c.user WHERE c.sentiment = 1")
+    @Query("SELECT distinct u FROM User u JOIN Comment c ON u.id = c.user WHERE c.sentiment = 0 AND u NOT IN (select c.user from Comment c where c.sentiment = 1)")
     List<User> Query8();
 
-    @Query("SELECT u FROM User u JOIN Blog b ON u.id = b.user JOIN Comment c ON b.id = c.blog WHERE c.sentiment = 1")
+    @Query("SELECT u FROM User u JOIN Blog b ON u.id = b.user JOIN Comment c ON b.id = c.blog WHERE c.sentiment = 1 AND b NOT IN (select c.blog from Comment c where c.sentiment = 0)")
     List<User> Query9();
 
 }

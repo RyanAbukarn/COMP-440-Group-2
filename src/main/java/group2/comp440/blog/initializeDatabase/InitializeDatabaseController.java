@@ -26,7 +26,7 @@ public class InitializeDatabaseController {
         ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator(false, false, "UTF-8",
                 new ClassPathResource("/university.sql"));
         resourceDatabasePopulator.execute(dataSource);
-        redirectAttributes.addFlashAttribute("message", "Successfully added the initialize database");
+        redirectAttributes.addFlashAttribute("message", "Successfully initialized the database");
         redirectAttributes.addFlashAttribute("alertClass", "alert-success");
         return "redirect:/initialize-database";
     }

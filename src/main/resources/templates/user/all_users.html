@@ -97,27 +97,25 @@
 <section layout:fragment="content">
     <h1 style="text-align: center">Users</h1>
 
-    <div class="button-row">
-        <a class="button is-active" th:href="@{/users/search/5}">Query 5: pair(s) with atleast one common hobby</a>
-        <a class="button is-active" th:href="@{/users/search/6}">Query 6: never posted a blog</a>
-        <a class="button is-active" th:href="@{/users/search/7}">Query 7: never posted a comment</a>
-        <a class="button is-active" th:href="@{/users/search/8}">Query 8: posted only negative comments</a>
-        <a class="button is-active" th:href="@{/users/search/9}">Query 9: has blog posts with no negative comments</a>
-        
-    </div>
     <table>
         <thead>
             <tr>
-                <th scope="col">Full name</th>
+                <th scope="col">Id</th>
                 <th scope="col">Email</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">Username</th>
                 <th scope="col">Action</th>
 
             </tr>
         </thead>
         <tbody>
             <tr th:each="user : ${users}">
-                <td th:text="${user.fullName()}" />
+                <td th:text="${user.getId()}" />
                 <td th:text="${user.getEmail()}" />
+                <td th:text="${user.getFirstName()}" />
+                <td th:text="${user.getLastName()}" />
+                <td th:text="${user.getUsername()}" />
                 <td>
                     <a th:href="@{/users/__${user.getId()}__}">View</a>
                 </td>

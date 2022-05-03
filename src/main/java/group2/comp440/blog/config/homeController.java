@@ -281,6 +281,9 @@ public class homeController {
             @RequestParam("tag_y") String tag_y) {
         List<User> users = userRepository.Query1(tag_x, tag_y);
         redirectAttributes.addFlashAttribute("users", users);
+        redirectAttributes.addFlashAttribute("query", 1);
+        redirectAttributes.addFlashAttribute("tag_x", tag_x);
+        redirectAttributes.addFlashAttribute("tag_y", tag_y);
         return "redirect:/query";
     }
 
@@ -289,13 +292,8 @@ public class homeController {
         User user = userRepository.findByUsername(username);
         List<Blog> blogs = userRepository.Query2(user);
         redirectAttributes.addFlashAttribute("blogs", blogs);
-        return "redirect:/query";
-    }
-
-    @PostMapping("/query_3")
-    public String postQueries3(RedirectAttributes redirectAttributes) {
-        List<User> users = userRepository.Query3();
-        redirectAttributes.addFlashAttribute("users", users);
+        redirectAttributes.addFlashAttribute("query", 2);
+        redirectAttributes.addFlashAttribute("username", username);
         return "redirect:/query";
     }
 
@@ -309,25 +307,30 @@ public class homeController {
         List<User> users = userRepository.Query4(id1, id2);
 
         redirectAttributes.addFlashAttribute("users", users);
+        redirectAttributes.addFlashAttribute("query", 4);
+        redirectAttributes.addFlashAttribute("username_x", username_x);
+        redirectAttributes.addFlashAttribute("username_y", username_y);
         return "redirect:/query";
     }
 
     @GetMapping("users/search/{query_id}")
     public String postQueries9(Model model, @PathVariable("query_id") Integer query_id) {
         Map<Integer, List<User>> searchMap = new HashMap<Integer, List<User>>();
+        searchMap.computeIfAbsent(3, s -> userRepository.Query3());
         searchMap.computeIfAbsent(6, s -> userRepository.Query6());
         searchMap.computeIfAbsent(7, s -> userRepository.Query7());
         searchMap.computeIfAbsent(8, s -> userRepository.Query8());
         searchMap.computeIfAbsent(9, s -> userRepository.Query9());
+        model.addAttribute("query", query_id);
         if (query_id == 5) {
             model.addAttribute("listUsers", userRepository.Query5().stream().map(ids -> userRepository.findAllById(ids))
                     .collect(Collectors.toList()));
-            return "user/pair_users";
+        } else if (query_id < 5 && query_id != 3) {
+            model.addAttribute("query", query_id);
         } else {
             model.addAttribute("users", searchMap.get(query_id));
-            return "user/all_users";
         }
-
+        return "user/query_data";
     }
 
 }
