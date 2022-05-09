@@ -9,9 +9,9 @@ https://www.youtube.com/watch?v=a8WwdKV8OjM
 https://youtu.be/D5Er6lnOnt4
 
 ## Member Contributions
-Jozsef Feher - Login and Signup pages with validation, Blog Posts, ER Diagram
+Jozsef Feher - Login and Signup pages with validation, Blog Posts, ER Diagram, Queries 1 - 4
 
-Ryan Abukarn - Project initialization with user table and Initialize Database option for user, Comment Posts
+Ryan Abukarn - Project initialization with user table and Initialize Database option for user, Comment Posts, Queries 5 - 9
 
 ## ER Diagram
 ![ER Diagram](https://user-images.githubusercontent.com/38539205/164583386-e6b50557-1506-4c16-8d58-e5a83e2e5418.jpg)
