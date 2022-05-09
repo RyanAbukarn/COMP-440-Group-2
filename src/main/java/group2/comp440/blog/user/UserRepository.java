@@ -53,7 +53,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT distinct u FROM User u JOIN Comment c ON u.id = c.user WHERE c.sentiment = 0 AND u NOT IN (select c.user from Comment c where c.sentiment = 1)")
     List<User> Query8();
 
-    @Query("SELECT u FROM User u JOIN Blog b ON u.id = b.user JOIN Comment c ON b.id = c.blog WHERE c.sentiment = 1 AND b NOT IN (select c.blog from Comment c where c.sentiment = 0)")
+    //@Query("SELECT u FROM User u JOIN Blog b ON u.id = b.user JOIN Comment c ON b.id = c.blog WHERE c.sentiment = 1 AND b NOT IN (select c.blog from Comment c where c.sentiment = 0)")
+    @Query(nativeQuery = true, value = "SELECT u.id FROM users u where u.id NOT IN (select b.user_id from blogs b JOIN comments c  ON b.id = c.blog_id WHERE c.sentiment = 0 ) AND u.id IN (select b.user_id from blogs b)")
     List<User> Query9();
 
 }
