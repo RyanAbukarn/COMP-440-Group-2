@@ -8,6 +8,10 @@ https://www.youtube.com/watch?v=a8WwdKV8OjM
 
 https://youtu.be/D5Er6lnOnt4
 
+## Youtube Video - Demo Phase 3
+
+https://youtu.be/VoSMM5dISyc 
+
 ## Member Contributions
 Jozsef Feher - Login and Signup pages with validation, Blog Posts, ER Diagram, Queries 1 - 4
 
